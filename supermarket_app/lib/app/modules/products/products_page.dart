@@ -10,6 +10,7 @@ import 'package:supermarket_app/app/widgets/app_card_skeleton_loading.dart';
 import 'package:supermarket_app/app/widgets/app_floating_button.dart';
 import 'package:supermarket_app/app/widgets/app_text.dart';
 import 'package:supermarket_app/app/widgets/app_textfield.dart';
+import 'package:supermarket_app/app/widgets/app_toast.dart';
 
 class ProductsPage extends StatefulWidget {
   const ProductsPage({Key? key}) : super(key: key);
@@ -177,6 +178,8 @@ class _ProductsPageState extends State<ProductsPage> {
                                             },
                                           )
                                       : () {
+                                          showToast(
+                                              'Produto adicionado a sacola.');
                                           controller.bagController.addItemOnBag(
                                               controller.productsList[index]);
                                         },

@@ -3,6 +3,7 @@ import 'package:mobx/mobx.dart';
 import 'package:supermarket_app/app/constants/api_endpoints.dart';
 import 'package:supermarket_app/app/modules/bag/domain/bag.dart';
 import 'package:supermarket_app/app/modules/bag/domain/helpers/bag_helper.dart';
+import 'package:supermarket_app/app/modules/bag/domain/items/helper/item_helper.dart';
 import 'package:supermarket_app/app/modules/bag/domain/items/item.dart';
 import 'package:supermarket_app/app/modules/products/domain/product.dart';
 import 'package:supermarket_app/app/modules/user_settings/domain/user.dart';
@@ -34,8 +35,6 @@ abstract class UserBagControllerBase with Store {
   @observable
   ObservableList<Item> itemsList = ObservableList<Item>();
 
-  // ObservableList<Product> bagProductList = ObservableList<Product>();
-
   @action
   updateUserObject(User user) {
     this.user = user;
@@ -46,15 +45,16 @@ abstract class UserBagControllerBase with Store {
   retrieveItemsOnUserBag() async {
     fetchItemsStatus = FetchItemsStatus.loading;
 
-    print('vai chamar FI ==============');
-
     final items = await appClient.getLists(
       endpoint: ApiEndpoints.itemsEndpoint,
-      listMapper: BagHelper.mapToBagList,
-      queryParameters: {'id': bag!.id},
+      listMapper: ItemHelper.mapToListItem,
+      queryParameters: {'bagId': bag!.id},
     );
 
-    print('DIZ AI O ITEMS: ${items.toString()}');
+    if (items != null) {
+      itemsList.addAll(items);
+    }
+    fetchItemsStatus = FetchItemsStatus.success;
   }
 
   @action
@@ -94,8 +94,34 @@ abstract class UserBagControllerBase with Store {
   }
 
   @action
-  removeItemOnBag(Product product) {
-    itemsList.remove(product);
+  sumItemCount(Item item) {
+    item = item.copyWith(itemCount: item.itemCount + 1);
+    itemsList[itemsList.indexWhere((element) => element.id == item.id)] = item;
+  }
+
+  @action
+  lessItemCount(Item item) {
+    if ((item.itemCount - 1) <= 0) {
+      item = item.copyWith(itemCount: 0);
+    } else {
+      item = item.copyWith(itemCount: item.itemCount - 1);
+    }
+
+    itemsList[itemsList.indexWhere((element) => element.id == item.id)] = item;
+  }
+
+  @action
+  Future<bool> removeItemOnBag(Item item) async {
+    final response = await appClient.delete(
+      endpoint: ApiEndpoints.itemsEndpoint,
+      bodyMapper: item.toJson(),
+    );
+
+    if (response != null) {
+      itemsList.remove(item);
+      return true;
+    }
+    return false;
   }
 
   saveItemOnBag(Item item) async {

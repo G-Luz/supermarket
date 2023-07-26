@@ -3,7 +3,9 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:supermarket_app/app/constants/app_colors.dart';
 import 'package:supermarket_app/app/repositories/user_bag/user_bag_controller.dart';
+import 'package:supermarket_app/app/widgets/app_card_skeleton_loading.dart';
 import 'package:supermarket_app/app/widgets/app_text.dart';
+import 'package:supermarket_app/app/widgets/app_toast.dart';
 // import 'package:supermarket_app/app/widgets/app_textfield.dart';
 
 class BagPage extends StatefulWidget {
@@ -45,10 +47,28 @@ class _BagPageState extends State<BagPage> {
           ),
           bottomNavigationBar: Container(
             height: 100,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: AppColors.brown,
             ),
-            child: Text("PORRAAA"),
+            child: (bagController.fetchItemsStatus == FetchItemsStatus.loading)
+                ? const SizedBox()
+                : Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      AppText(
+                        text: 'Preço total:',
+                        fontColor: AppColors.ltTeal,
+                        fontSize: 25,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      AppText(
+                        text: '\$ 50.0',
+                        fontColor: AppColors.ltTeal,
+                        fontSize: 25,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ],
+                  ),
           ),
           // bottomSheet:
           body: Container(
@@ -60,7 +80,7 @@ class _BagPageState extends State<BagPage> {
                   child: Padding(
                     padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
                     child: Text(
-                      'Carrinho',
+                      'Minha sacola',
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
                         fontSize: 35,
@@ -69,79 +89,125 @@ class _BagPageState extends State<BagPage> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                Expanded(
-                  child: ListView.separated(
-                    physics: const BouncingScrollPhysics(),
-                    separatorBuilder: (context, index) => Divider(
-                      color: Colors.grey.withOpacity(.5),
-                    ),
-                    itemCount: 10,
-                    itemBuilder: (context, index) {
-                      return Container(
-                        margin: const EdgeInsets.symmetric(vertical: 5),
-                        child: Row(
-                          children: [
-                            Container(
-                              width: 70,
-                              height: 70,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(15),
-                                image: DecorationImage(
-                                  image: NetworkImage(
-                                    'https://picsum.photos/200/300',
-                                  ),
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: 20),
-                            SizedBox(
-                              width: deviceWidth * .4,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: const [
-                                  AppText(
-                                    text: 'Name',
-                                    fontColor: AppColors.teal,
-                                    fontSize: 17,
-                                  ),
-                                  const SizedBox(height: 5),
-                                  AppText(
-                                    text:
-                                        'Descriptionnnnnnnnnnnnnnnnnnnnnnnnnnnn',
-                                    fontColor: AppColors.teal,
-                                    textOverflow: TextOverflow.ellipsis,
-                                    fontSize: 14,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              margin:
-                                  const EdgeInsets.symmetric(horizontal: 10),
-                              child: SizedBox(
-                                width: deviceWidth * .08,
-                                child: TextFormField(
-                                  initialValue: '0',
-                                  textAlign: TextAlign.center,
-                                  onChanged: (String value) {},
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: 5),
-                            IconButton(
-                              onPressed: () {},
-                              icon: Icon(
-                                Icons.delete_outline,
-                                color: AppColors.teal,
-                              ),
-                            )
-                          ],
+                if (bagController.fetchItemsStatus == FetchItemsStatus.loading)
+                  const Expanded(child: AppListSkeletonLoading())
+                else
+                  Expanded(
+                    child: ListView.separated(
+                      physics: const BouncingScrollPhysics(),
+                      separatorBuilder: (context, index) => Container(
+                        margin: EdgeInsets.symmetric(vertical: 10),
+                        child: Divider(
+                          color: Colors.grey.withOpacity(.5),
                         ),
-                      );
-                    },
+                      ),
+                      itemCount: bagController.itemsList.length,
+                      itemBuilder: (context, index) {
+                        return Container(
+                          margin: const EdgeInsets.symmetric(vertical: 5),
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 70,
+                                height: 70,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(15),
+                                  image: DecorationImage(
+                                    image: NetworkImage(
+                                      bagController
+                                          .itemsList[index].product.base64Image,
+                                    ),
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 20),
+                              SizedBox(
+                                width: deviceWidth * .4,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    AppText(
+                                      text: bagController
+                                          .itemsList[index].product.name,
+                                      fontColor: AppColors.teal,
+                                      fontSize: 17,
+                                    ),
+                                    const SizedBox(height: 5),
+                                    AppText(
+                                      text: bagController
+                                          .itemsList[index].product.description,
+                                      fontColor: AppColors.teal,
+                                      textOverflow: TextOverflow.ellipsis,
+                                      fontSize: 14,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 10),
+                                child: Column(
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () => bagController.sumItemCount(
+                                          bagController.itemsList[index]),
+                                      child: const Icon(
+                                        Icons.add_circle_outline,
+                                        color: AppColors.teal,
+                                        size: 17,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 7),
+                                    SizedBox(
+                                      width: deviceWidth * .08,
+                                      child: AppText(
+                                        text: bagController
+                                            .itemsList[index].itemCount
+                                            .toString(),
+                                        fontColor: AppColors.black,
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 7),
+                                    GestureDetector(
+                                      onTap: () => bagController.lessItemCount(
+                                        bagController.itemsList[index],
+                                      ),
+                                      child: const Icon(
+                                        Icons.remove_circle_outline,
+                                        color: AppColors.teal,
+                                        size: 17,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(width: 5),
+                              IconButton(
+                                onPressed: () async {
+                                  final result =
+                                      await bagController.removeItemOnBag(
+                                    bagController.itemsList[index],
+                                  );
+                                  if (result) {
+                                    showToast('Produto removido com sucesso!');
+                                  } else {
+                                    showToast(
+                                        'Houve um erro ao tentar remover o produto. Tente novamente');
+                                  }
+                                },
+                                icon: const Icon(
+                                  Icons.delete_outline,
+                                  color: AppColors.teal,
+                                ),
+                              )
+                            ],
+                          ),
+                        );
+                      },
+                    ),
                   ),
-                ),
               ],
             ),
           ),

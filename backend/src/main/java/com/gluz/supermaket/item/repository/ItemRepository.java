@@ -12,8 +12,10 @@ import java.util.List;
 @Repository
 public interface ItemRepository extends JpaRepository<Item, Long> {
 
+    @Query(value = "SELECT * FROM items it WHERE it.product_id = :prodID", nativeQuery = true)
+    Item countAllItemsByProductId(@Param("prodID") long prodID);
 
-    @Query(value = "SELECT * FROM items it WHERE it.bag_id = :bagID", nativeQuery = true)
+    @Query(value = "SELECT it FROM Item it WHERE it.bag.id = :bagID")
     List<Item> findItemsByBagID(@Param("bagID") int bagID);
 
 }

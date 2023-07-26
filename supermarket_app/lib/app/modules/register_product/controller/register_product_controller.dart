@@ -4,6 +4,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mobx/mobx.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:supermarket_app/app/constants/api_endpoints.dart';
+import 'package:supermarket_app/app/modules/products/domain/helper/product_helper.dart';
 import 'package:supermarket_app/app/modules/products/domain/product.dart';
 import 'package:supermarket_app/app/repositories/app_client/app_client_repository.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -155,10 +156,13 @@ abstract class RegisterProductControllerBase with Store {
       );
     }
 
-    final response = await appClient.post<Product>(
+    final response = await appClient.mappedPost<Product>(
       endpoint: ApiEndpoints.productsEndpoint,
+      jsonMapper: ProductHelper.mapToProduct,
       bodyMapper: product.toJson(),
     );
+
+    print('ME DIZ A REPONSE: ${response}');
 
     if (response != null) {
       return true;

@@ -114,7 +114,7 @@ class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
               AppButton(
                 text: controller.bagController.isAdminAccount
                     ? 'Editar produto'
-                    : 'Adicionar ao carrinho',
+                    : 'Adicionar a sacola',
                 width: deviceWidth,
                 backgroundColor: AppColors.ltTeal,
                 onPressedCallback: controller.bagController.isAdminAccount

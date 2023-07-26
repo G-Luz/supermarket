@@ -108,6 +108,14 @@ mixin _$UserBagController on UserBagControllerBase, Store {
         () => super.addItemOnBag(product, productQuantity: productQuantity));
   }
 
+  late final _$removeItemOnBagAsyncAction =
+      AsyncAction('UserBagControllerBase.removeItemOnBag', context: context);
+
+  @override
+  Future<bool> removeItemOnBag(Item item) {
+    return _$removeItemOnBagAsyncAction.run(() => super.removeItemOnBag(item));
+  }
+
   late final _$UserBagControllerBaseActionController =
       ActionController(name: 'UserBagControllerBase', context: context);
 
@@ -123,11 +131,22 @@ mixin _$UserBagController on UserBagControllerBase, Store {
   }
 
   @override
-  dynamic removeItemOnBag(Product product) {
+  dynamic sumItemCount(Item item) {
     final _$actionInfo = _$UserBagControllerBaseActionController.startAction(
-        name: 'UserBagControllerBase.removeItemOnBag');
+        name: 'UserBagControllerBase.sumItemCount');
     try {
-      return super.removeItemOnBag(product);
+      return super.sumItemCount(item);
+    } finally {
+      _$UserBagControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic lessItemCount(Item item) {
+    final _$actionInfo = _$UserBagControllerBaseActionController.startAction(
+        name: 'UserBagControllerBase.lessItemCount');
+    try {
+      return super.lessItemCount(item);
     } finally {
       _$UserBagControllerBaseActionController.endAction(_$actionInfo);
     }

@@ -26,6 +26,11 @@ public class ItemService implements ConvertEntities<ItemDTO, Item> {
     }
 
     public ItemDTO saveItem(ItemDTO dto) {
+        Item item = itemRepository.countAllItemsByProductId(dto.getProduct().getId());
+        if (item != null) {
+            dto.setId(item.getId());
+            dto.setItemCount(item.getItemCount() + 1);
+        }
         return convertToDTO(itemRepository.save(convertToEntity(dto)));
     }
 
@@ -36,8 +41,6 @@ public class ItemService implements ConvertEntities<ItemDTO, Item> {
     public List<ItemDTO> retrieveItemsByBagId(int bagId) {
         List<ItemDTO> dtoItemsList = new ArrayList<>();
         List<Item> itemsList = itemRepository.findItemsByBagID(bagId);
-
-        System.out.println("ME DIZ O LENGTH: " + itemsList.size());
         for (Item it : itemsList) {
             dtoItemsList.add(convertToDTO(it));
         }

@@ -23,63 +23,8 @@ class _AppFloatingButtonState extends State<AppFloatingButton>
   @override
   Widget build(BuildContext context) {
     final bagController = Modular.get<UserBagController>();
-
     return Observer(
       builder: (context) {
-        // return FloatingActionButton.extended(
-        //   onPressed: bagController.isAdminAccount
-        //       ? () => Modular.to.pushNamed('/newProduct')
-        //       : () {
-        //           ///TODO: view bag
-        //         },
-        //   backgroundColor: AppColors.teal,
-        //   elevation: 8,
-        //   isExtended: bagController.isExtendedFab,
-        //   // label: bagController.user?.role == 'ADMIN'
-        //   //     ? const Icon(Icons.add)
-        //       // :
-        //       label: AnimatedSwitcher(
-        //           duration: const Duration(seconds: 1),
-        //           transitionBuilder:
-        //               (Widget child, Animation<double> animation) =>
-        //                   FadeTransition(
-        //             opacity: animation,
-        //             child: SizeTransition(
-        //               sizeFactor: animation,
-        //               axis: Axis.horizontal,
-        //               child: child,
-        //             ),
-        //           ),
-        //           child: bagController.isExtendedFab
-        //               ? Row(
-        //                   children: [
-        //                     badges.Badge(
-        //                       badgeContent: Text(
-        //                         bagController.itemsList.length.toString(),
-        //                         style: const TextStyle(color: Colors.white),
-        //                       ),
-        //                       showBadge: true,
-        //                       shape: badges.BadgeShape.circle,
-        //                       badgeColor: const Color(0xFFF9A27E),
-        //                       elevation: 4,
-        //                       padding: const EdgeInsetsDirectional.fromSTEB(
-        //                           8, 8, 8, 8),
-        //                       position: badges.BadgePosition.topEnd(),
-        //                       animationType: badges.BadgeAnimationType.scale,
-        //                       toAnimate: true,
-        //                       child: const Icon(
-        //                         Icons.shopping_bag_outlined,
-        //                         color: AppColors.iceWhite,
-        //                         size: 30,
-        //                       ),
-        //                     ),
-        //                     const SizedBox(width: 20),
-        //                     const AppText(text: 'Ver sacola')
-        //                   ],
-        //                 )
-        //               : Text("PORRA")
-        //         ),
-        // );
         return FloatingActionButton.extended(
           onPressed: bagController.isAdminAccount
               ? () => Modular.to.pushNamed('/newProduct/')
@@ -89,7 +34,7 @@ class _AppFloatingButtonState extends State<AppFloatingButton>
           label: bagController.user?.role == 'ADMIN'
               ? const Icon(Icons.add)
               : AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 700),
+                  duration: const Duration(milliseconds: 450),
                   transitionBuilder:
                       (Widget child, Animation<double> animation) =>
                           FadeTransition(

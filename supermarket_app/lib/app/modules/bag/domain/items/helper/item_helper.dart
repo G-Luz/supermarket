@@ -4,4 +4,8 @@ class ItemHelper {
   static Item mapToItem(Map<String, dynamic> json) {
     return Item.fromJson(json);
   }
+  
+  static List<Item> mapToListItem(List<dynamic> jsonList) => jsonList
+        .map((item) => Item.fromJson(item))
+        .toList(growable: false);
 }

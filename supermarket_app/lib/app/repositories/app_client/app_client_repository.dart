@@ -94,7 +94,7 @@ abstract class AppClientRepositoryBase with Store {
     }
   }
 
-   Future<T?> mappedPost<T>({
+  Future<T?> mappedPost<T>({
     required String endpoint,
     required JsonMapper<T> jsonMapper,
     Map<String, dynamic>? bodyMapper,
@@ -122,7 +122,6 @@ abstract class AppClientRepositoryBase with Store {
     }
   }
 
-  
   Future<Response<T>?> put<T>({
     required String endpoint,
     Map<String, dynamic>? bodyMapper,
@@ -153,13 +152,15 @@ abstract class AppClientRepositoryBase with Store {
     try {
       print('Endpoint: $endpoint');
       print('Body Mapper: $bodyMapper');
-      final response = await dio.delete<T>('${ApiEndpoints.baseURL}$endpoint',
-          data: bodyMapper,
-          queryParameters: queryMapper,
-          options: Options(
-            contentType: Headers.jsonContentType,
-            responseType: ResponseType.json,
-          ));
+      final response = await dio.delete<T>(
+        '${ApiEndpoints.baseURL}$endpoint',
+        data: bodyMapper,
+        queryParameters: queryMapper,
+        options: Options(
+          contentType: Headers.jsonContentType,
+          responseType: ResponseType.json,
+        ),
+      );
       return response;
     } on DioException catch (e) {
       print('Request error: $e');

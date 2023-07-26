@@ -17,11 +17,7 @@ class AppItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      ///TODO: PASSING ID FOR SEARCH PRODUCT
-      // onTap: () => Modular.to.pushNamed('/productDetails'),
       onTap: onTapCallback,
-
-      ///TODO: LONG PRESS INSERT IN KART
       onLongPress: onLongTapCallback,
       child: Container(
         width: 180,

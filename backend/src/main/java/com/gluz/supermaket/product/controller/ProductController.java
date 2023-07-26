@@ -55,6 +55,8 @@ public class ProductController {
         }
     }
 
+//    @ExceptionHandler
+
     @GetMapping(params = "id")
     public ResponseEntity<ProductDTO> findProductsByID(@RequestParam Long id) {
         try {
@@ -90,5 +92,10 @@ public class ProductController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
+    }
+
+    @ExceptionHandler
+    public Exception exceptionHandler(Exception e){
+        return e;
     }
 }

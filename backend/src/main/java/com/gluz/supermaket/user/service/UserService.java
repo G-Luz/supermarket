@@ -55,9 +55,6 @@ public class UserService implements ConvertEntities<UserDTO, User>, UserDetailsS
         user.setName(dto.getName());
         user.setEmail(dto.getEmail());
         user.setRole(dto.getRole());
-
-        System.out.println("CARAIO PORQ???? " + dto.getPassword());
-
         if (dto.getBag() != null) {
             user.setBag(bagService.convertToEntity(dto.getBag()));
         }
