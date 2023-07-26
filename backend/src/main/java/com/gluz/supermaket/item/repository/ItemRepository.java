@@ -12,4 +12,8 @@ import java.util.List;
 @Repository
 public interface ItemRepository extends JpaRepository<Item, Long> {
 
+
+    @Query(value = "SELECT * FROM items it WHERE it.bag_id = :bagID", nativeQuery = true)
+    List<Item> findItemsByBagID(@Param("bagID") int bagID);
+
 }

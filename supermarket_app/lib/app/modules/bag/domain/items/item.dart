@@ -9,13 +9,13 @@ class Item {
   final int? id;
   final int itemCount;
   final Product product;
-  final Bag bag;
+  final Bag? bag;
 
   Item({
     this.id,
     required this.itemCount,
     required this.product,
-    required this.bag,
+    this.bag,
   });
 
   factory Item.fromJson(Map<String, dynamic> json) => _$ItemFromJson(json);

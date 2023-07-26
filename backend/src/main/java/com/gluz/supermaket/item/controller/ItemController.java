@@ -5,6 +5,8 @@ import com.gluz.supermaket.item.service.ItemService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(path = "/v1/items")
 public class ItemController {
@@ -18,6 +20,11 @@ public class ItemController {
     @PostMapping
     public ResponseEntity<ItemDTO> saveItem(@RequestBody ItemDTO dto) {
         return ResponseEntity.ok().body(itemService.saveItem(dto));
+    }
+
+    @GetMapping(params = "bagId")
+    public ResponseEntity<List<ItemDTO>> saveItem(@RequestParam int bagId) {
+        return ResponseEntity.ok().body(itemService.retrieveItemsByBagId(bagId));
     }
 
     @PutMapping

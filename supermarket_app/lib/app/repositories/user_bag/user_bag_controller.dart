@@ -49,7 +49,7 @@ abstract class UserBagControllerBase with Store {
     print('vai chamar FI ==============');
 
     final items = await appClient.getLists(
-      endpoint: ApiEndpoints.bagEndpoint,
+      endpoint: ApiEndpoints.itemsEndpoint,
       listMapper: BagHelper.mapToBagList,
       queryParameters: {'id': bag!.id},
     );

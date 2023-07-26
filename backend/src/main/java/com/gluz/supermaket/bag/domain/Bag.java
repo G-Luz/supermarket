@@ -9,6 +9,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 
 @Getter
@@ -36,4 +37,17 @@ public class Bag {
     @JoinColumn(name = "bag_id", foreignKey = @ForeignKey(name = "fk_bag_items"), referencedColumnName = "id")
     @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     private List<Item> items;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Bag)) return false;
+        Bag bag = (Bag) o;
+        return Objects.equals(id, bag.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

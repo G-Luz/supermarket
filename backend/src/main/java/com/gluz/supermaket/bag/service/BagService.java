@@ -9,6 +9,7 @@ import com.gluz.supermaket.item.service.ItemService;
 import com.gluz.supermaket.user.domain.User;
 import com.gluz.supermaket.user.repository.UserRepository;
 import com.gluz.supermaket.utils.ConvertEntities;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ public class BagService implements ConvertEntities<BagDTO, Bag> {
     private ItemService itemService;
     private UserRepository userRepository;
 
-    public BagService(BagRepository bagRepository, ItemService itemService, UserRepository userRepository) {
+    public BagService(BagRepository bagRepository, @Lazy ItemService itemService, UserRepository userRepository) {
         this.bagRepository = bagRepository;
         this.itemService = itemService;
         this.userRepository = userRepository;

@@ -24,9 +24,9 @@ public class Item {
     @OneToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH}, fetch = FetchType.LAZY)
     private Product product;
 
-//    @JoinColumn(name = "bag_id")
-//    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH}, fetch = FetchType.LAZY)
-//    private Bag bag;
+    @JoinColumn(name = "bag_id")
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH}, fetch = FetchType.LAZY)
+    private Bag bag;
 
     @Override
     public boolean equals(Object o) {
