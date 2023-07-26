@@ -39,6 +39,7 @@ abstract class UserBagControllerBase with Store {
   @action
   updateUserObject(User user) {
     this.user = user;
+    bag = user.bag;
   }
 
   @action

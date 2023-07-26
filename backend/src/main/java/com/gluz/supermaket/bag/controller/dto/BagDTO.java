@@ -1,7 +1,6 @@
 package com.gluz.supermaket.bag.controller.dto;
 
-import com.gluz.supermaket.item.domain.Item;
-import com.gluz.supermaket.user.domain.User;
+import com.gluz.supermaket.item.controller.dto.ItemDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,7 +16,7 @@ public class BagDTO {
     private Long id;
     private int itemCount;
     private double totalPrice;
-//    private List<Item> items;
+    private List<ItemDTO> items;
 
     public BagDTO() {
 

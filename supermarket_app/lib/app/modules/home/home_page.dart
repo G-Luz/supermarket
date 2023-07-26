@@ -6,6 +6,7 @@ import 'package:supermarket_app/app/modules/home/controller/home_controller.dart
 import 'package:supermarket_app/app/modules/home/widgets/app_card_item.dart';
 import 'package:supermarket_app/app/widgets/app_card_skeleton_loading.dart';
 import 'package:supermarket_app/app/widgets/app_floating_button.dart';
+import 'package:badges/badges.dart' as badges;
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -69,12 +70,26 @@ class _HomePageState extends State<HomePage> {
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                const Padding(
+                Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(0, 0, 20, 0),
-                  child: Icon(
-                    Icons.notifications_none,
-                    color: Colors.black,
-                    size: 30,
+                  child: badges.Badge(
+                    badgeContent: const Text(
+                      '0',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    showBadge: true,
+                    shape: badges.BadgeShape.circle,
+                    badgeColor: AppColors.teal,
+                    elevation: 4,
+                    padding: const EdgeInsetsDirectional.fromSTEB(7, 7, 7, 7),
+                    position: badges.BadgePosition.topEnd(),
+                    animationType: badges.BadgeAnimationType.scale,
+                    toAnimate: true,
+                    child: const Icon(
+                      Icons.notifications_outlined,
+                      color: AppColors.black,
+                      size: 30,
+                    ),
                   ),
                 ),
                 Padding(

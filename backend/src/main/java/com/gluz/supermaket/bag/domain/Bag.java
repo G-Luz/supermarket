@@ -33,7 +33,7 @@ public class Bag {
     @JsonIgnore
     private User user;
 
-//    @JoinColumn(name = "bag_id", foreignKey = @ForeignKey(name = "fk_bag_items"), referencedColumnName = "id")
-//    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-//    private List<Item> items;
+    @JoinColumn(name = "bag_id", foreignKey = @ForeignKey(name = "fk_bag_items"), referencedColumnName = "id")
+    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    private List<Item> items;
 }
